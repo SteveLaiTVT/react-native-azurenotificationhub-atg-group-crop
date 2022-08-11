@@ -22,3 +22,7 @@ The React Native Azure Notification Hub plugin is provided under the [MIT Licens
 # Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Statement
+
+This one repository is cloned by Cy CatalystCode, all copyright from [CatalystCode](https://github.com/CatalystCode/react-native-azurenotificationhub).

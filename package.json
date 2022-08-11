@@ -1,11 +1,11 @@
 {
-  "name": "react-native-azurenotificationhub",
+  "name": "react-native-azurenotificationhub-atg-group-crop",
   "version": "0.9.5-Patched.1",
   "description": "React Native module to support Azure Notification Hub push notifications on Android, iOS, and Windows.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CatalystCode/react-native-azurenotificationhub.git"
+    "url": "git+https://github.com/SteveLaiTVT/react-native-azurenotificationhub-atg-group-crop"
   },
   "keywords": [
     "Azure",
@@ -15,7 +15,7 @@
     "Notifications",
     "Hub"
   ],
-  "author": "rozele",
+  "author": "rozele,steve",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/CatalystCode/react-native-azurenotificationhub/issues"
