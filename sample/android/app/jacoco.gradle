@@ -24,7 +24,7 @@ tasks.withType(Test) {
 }
 
 def coverageSourceDirs = [
-    "../../node_modules/react-native-azurenotificationhub/android/src/main/java"
+    "../../node_modules/react-native-azurenotificationhub-atg-group-crop/android/src/main/java"
 ]
 
 task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
@@ -33,7 +33,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
     description = "Generate Jacoco coverage reports"
 
     getClassDirectories().setFrom(fileTree(
-        dir: "../../node_modules/react-native-azurenotificationhub/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+        dir: "../../node_modules/react-native-azurenotificationhub-atg-group-crop/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
         excludes: ['**/R.class',
                    '**/R$*.class',
                    '**/BuildConfig.*',
@@ -86,7 +86,7 @@ task createOfflineTestCoverageReport(dependsOn: ["instrument", "testDebugUnitTes
                     fileset(dir: "$project.buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes")
                 }
                 sourcefiles {
-                    fileset(dir: "../../node_modules/react-native-azurenotificationhub/android/src/main/java")
+                    fileset(dir: "../../node_modules/react-native-azurenotificationhub-atg-group-crop/android/src/main/java")
                 }
             }
         }

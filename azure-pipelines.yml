@@ -32,10 +32,10 @@ steps:
   workingDirectory: '../sample'
 
 - script: |
-    rm -R ./node_modules/react-native-azurenotificationhub/*
-    cp -R ../s/* ./node_modules/react-native-azurenotificationhub/
+    rm -R ./node_modules/react-native-azurenotificationhub-atg-group-crop/*
+    cp -R ../s/* ./node_modules/react-native-azurenotificationhub-atg-group-crop/
     cp ../s/.slather.yml .
-  displayName: 'Copying react-native-azurenotificationhub'
+  displayName: 'Copying react-native-azurenotificationhub-atg-group-crop'
   workingDirectory: '../sample'
 
 - script: npm run lint
@@ -49,7 +49,7 @@ steps:
     gradleWrapperFile: '../sample/android/gradlew'
     tasks: 'assembleRelease'
   continueOnError: false
-  
+
 - task: Gradle@2
   displayName: 'Running Android unit tests'
   inputs:
@@ -75,7 +75,7 @@ steps:
 - script: |
     pod install
     pod update
-    sudo cp -R ../node_modules/react-native-azurenotificationhub/ios Pods/RNAzureNotificationHub
+    sudo cp -R ../node_modules/react-native-azurenotificationhub-atg-group-crop/ios Pods/RNAzureNotificationHub
     sudo chown -R $(id -u):$(id -g) Pods/RNAzureNotificationHub
     pod update
   displayName: 'Install CocoaPods dependencies'
@@ -92,7 +92,7 @@ steps:
     xcodeVersion: '10'
     signingOption: 'nosign'
     useXcpretty: 'true'
-    
+
 - task: Xcode@5
   displayName: 'Running iOS unit tests'
   inputs:
@@ -116,7 +116,7 @@ steps:
 
 - script: reportgenerator "-reports:*.xml" "-reporttypes:cobertura" "-targetdir:."
   displayName: 'Merge Android and iOS reports'
-  workingDirectory: '../sample'  
+  workingDirectory: '../sample'
 
 - task: PublishCodeCoverageResults@1
   inputs:

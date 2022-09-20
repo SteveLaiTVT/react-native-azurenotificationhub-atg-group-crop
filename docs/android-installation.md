@@ -11,10 +11,10 @@ react-native init ReactNativeAzureNotificationHubSample
 In addition to the standard React Native requirements, you will also need to install the following Android SDK components with your prefered SDK management tools:
 * Google Play services
 
-## Install react-native-azurenotificationhub
+## Install react-native-azurenotificationhub-atg-group-crop
 
 ```
-npm install react-native-azurenotificationhub
+npm install react-native-azurenotificationhub-atg-group-crop
 ```
 
 ## Create a Notification Hub
@@ -84,7 +84,7 @@ In `android/app/build.gradle`
 dependencies {
     ...
 
-    implementation project(":react-native-azurenotificationhub") // <- Note only include this line if using a version of RN < 0.60 since it will be auto linked
+    implementation project(":react-native-azurenotificationhub-atg-group-crop") // <- Note only include this line if using a version of RN < 0.60 since it will be auto linked
     implementation "com.google.firebase:firebase-messaging:17.6.0"
     implementation "com.google.firebase:firebase-core:16.0.8"
 }
@@ -135,8 +135,8 @@ In `android/settings.gradle`
 ```gradle
 ...
 
-include ':react-native-azurenotificationhub'
-project(':react-native-azurenotificationhub').projectDir = file('../node_modules/react-native-azurenotificationhub/android')
+include ':react-native-azurenotificationhub-atg-group-crop'
+project(':react-native-azurenotificationhub-atg-group-crop').projectDir = file('../node_modules/react-native-azurenotificationhub/android')
 ```
 
 Register the module package in `MainApplication.java`

@@ -253,7 +253,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RNAzureNotificationHub (from `../node_modules/react-native-azurenotificationhub/RNAzureNotificationHub.podspec`)
+  - RNAzureNotificationHub (from `../node_modules/react-native-azurenotificationhub-atg-group-crop/RNAzureNotificationHub.podspec`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -312,7 +312,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   RNAzureNotificationHub:
-    :podspec: "../node_modules/react-native-azurenotificationhub/RNAzureNotificationHub.podspec"
+    :podspec: "../node_modules/react-native-azurenotificationhub-atg-group-crop/RNAzureNotificationHub.podspec"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 

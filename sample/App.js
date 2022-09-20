@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const NotificationHub = require('react-native-azurenotificationhub');
+const NotificationHub = require('react-native-azurenotificationhub-atg-group-crop');
 const PushNotificationEmitter = new NativeEventEmitter(NotificationHub);
 
 const EVENT_AZURE_NOTIFICATION_HUB_REGISTERED         = 'azureNotificationHubRegistered';
