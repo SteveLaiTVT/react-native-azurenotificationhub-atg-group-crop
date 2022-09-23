@@ -1,5 +1,32 @@
 package com.azure.reactnative.notificationhub;
 
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.ERROR_ACTIVITY_CLASS_NOT_FOUND;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.ERROR_COVERT_ACTIONS;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.ERROR_FETCH_IMAGE;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.ERROR_GET_ACTIONS_ARRAY;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.EVENT_REMOTE_NOTIFICATION_RECEIVED;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.INTENT_EVENT_TYPE_BUNDLE;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_INTENT_EVENT_NAME;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_INTENT_EVENT_TYPE;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_NOTIFICATION_PAYLOAD_TYPE;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_ACTION;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_ACTIONS;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_COLDSTART;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_FOREGROUND;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_ID;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_SMALL_ICON;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_SOUND_NAME;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.KEY_REMOTE_NOTIFICATION_USER_INTERACTION;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.REMOTE_NOTIFICATION_PRIORITY_HIGH;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.REMOTE_NOTIFICATION_PRIORITY_LOW;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.REMOTE_NOTIFICATION_PRIORITY_MAX;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.REMOTE_NOTIFICATION_PRIORITY_MIN;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.REMOTE_NOTIFICATION_PRIORITY_NORMAL;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.RESOURCE_DEF_TYPE_MIPMAP;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.RESOURCE_DEF_TYPE_RAW;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.RESOURCE_NAME_LAUNCHER;
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.RESOURCE_NAME_NOTIFICATION;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +45,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.microsoft.windowsazure.messaging.NotificationHub;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +58,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.azure.reactnative.notificationhub.ReactNativeConstants.*;
-
 public final class ReactNativeUtil {
     public static final String TAG = "ReactNativeUtil";
 
@@ -41,11 +65,6 @@ public final class ReactNativeUtil {
 
     public static void runInWorkerThread(Runnable runnable) {
         mPool.execute(runnable);
-    }
-
-    public static NotificationHub createNotificationHub(String hubName, String connectionString, Context context) {
-        NotificationHub hub = new NotificationHub(hubName, connectionString, context);
-        return hub;
     }
 
     public static JSONObject convertBundleToJSON(Bundle bundle) {
@@ -61,47 +80,7 @@ public final class ReactNativeUtil {
         return json;
     }
 
-    public static WritableMap convertBundleToMap(Bundle bundle) {
-        WritableMap map = Arguments.createMap();
-        if (bundle == null) {
-            return map;
-        }
 
-        for (String key : bundle.keySet()) {
-            try {
-                Object o = bundle.get(key);
-
-                // TODO: Handle char and all array types
-                if (o == null) {
-                    map.putNull(key);
-                } else if (o instanceof Bundle) {
-                    map.putMap(key, convertBundleToMap((Bundle) o));
-                } else if (o instanceof String) {
-                    map.putString(key, (String) o);
-                } else if (o instanceof Float) {
-                    map.putDouble(key, ((Float) o).doubleValue());
-                } else if (o instanceof Double) {
-                    map.putDouble(key, (Double) o);
-                } else if (o instanceof Integer) {
-                    map.putInt(key, (Integer) o);
-                } else if (o instanceof Long) {
-                    map.putInt(key, ((Long) o).intValue());
-                } else if (o instanceof Short) {
-                    map.putInt(key, ((Short) o).intValue());
-                } else if (o instanceof Byte) {
-                    map.putInt(key, ((Byte) o).intValue());
-                } else if (o instanceof Boolean) {
-                    map.putBoolean(key, (Boolean) o);
-                } else {
-                    map.putNull(key);
-                }
-            } catch (ClassCastException e) {
-                // TODO: Warn
-            }
-        }
-
-        return map;
-    }
 
     public static Intent createBroadcastIntent(String action, Bundle bundle) {
         Intent intent = ReactNativeNotificationHubUtil.IntentFactory.createIntent(action);
@@ -122,18 +101,6 @@ public final class ReactNativeUtil {
         }
     }
 
-    public static void emitIntent(ReactContext reactContext,
-                                  Intent intent) {
-        String eventName = intent.getStringExtra(KEY_INTENT_EVENT_NAME);
-        String eventType = intent.getStringExtra(KEY_INTENT_EVENT_TYPE);
-        if (eventType.equals(INTENT_EVENT_TYPE_BUNDLE)) {
-            WritableMap map = convertBundleToMap(intent.getExtras());
-            emitEvent(reactContext, eventName, map);
-        } else {
-            String data = intent.getStringExtra(KEY_INTENT_EVENT_STRING_DATA);
-            emitEvent(reactContext, eventName, data);
-        }
-    }
 
     public static Class getMainActivityClass(Context context) {
         String packageName = context.getPackageName();
@@ -291,6 +258,48 @@ public final class ReactNativeUtil {
                 .setAutoCancel(autoCancel);
 
         return notificationBuilder;
+    }
+
+    public static WritableMap convertBundleToMap(Bundle bundle) {
+        WritableMap map = Arguments.createMap();
+        if (bundle == null) {
+            return map;
+        }
+
+        for (String key : bundle.keySet()) {
+            try {
+                Object o = bundle.get(key);
+
+                // TODO: Handle char and all array types
+                if (o == null) {
+                    map.putNull(key);
+                } else if (o instanceof Bundle) {
+                    map.putMap(key, convertBundleToMap((Bundle) o));
+                } else if (o instanceof String) {
+                    map.putString(key, (String) o);
+                } else if (o instanceof Float) {
+                    map.putDouble(key, ((Float) o).doubleValue());
+                } else if (o instanceof Double) {
+                    map.putDouble(key, (Double) o);
+                } else if (o instanceof Integer) {
+                    map.putInt(key, (Integer) o);
+                } else if (o instanceof Long) {
+                    map.putInt(key, ((Long) o).intValue());
+                } else if (o instanceof Short) {
+                    map.putInt(key, ((Short) o).intValue());
+                } else if (o instanceof Byte) {
+                    map.putInt(key, ((Byte) o).intValue());
+                } else if (o instanceof Boolean) {
+                    map.putBoolean(key, (Boolean) o);
+                } else {
+                    map.putNull(key);
+                }
+            } catch (ClassCastException e) {
+                // TODO: Warn
+            }
+        }
+
+        return map;
     }
 
     public static Bundle getBundleFromIntent(Intent intent) {

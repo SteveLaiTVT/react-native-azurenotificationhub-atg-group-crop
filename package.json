@@ -1,6 +1,6 @@
 {
   "name": "react-native-azurenotificationhub-atg-group-crop",
-  "version": "0.0.6-alphant",
+  "version": "0.0.8-sb",
   "description": "React Native module to support Azure Notification Hub push notifications on Android, iOS, and Windows.",
   "main": "index.js",
   "repository": {
