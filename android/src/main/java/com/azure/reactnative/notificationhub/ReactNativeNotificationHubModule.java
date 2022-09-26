@@ -1,6 +1,6 @@
 package com.azure.reactnative.notificationhub;
 
-import static com.azure.reactnative.notificationhub.ReactNativeConstants.*
+import static com.azure.reactnative.notificationhub.ReactNativeConstants.*;
 import static com.azure.reactnative.notificationhub.ReactNativeUtil.convertBundleToMap;
 
 import android.app.Activity;
@@ -9,6 +9,7 @@ import android.content.Intent;
 
 import com.azure.reactnative.notificationhub.listener.CustomListener;
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -16,39 +17,19 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.microsoft.windowsazure.messaging.notificationhubs.NotificationListener;
 import com.microsoft.windowsazure.messaging.notificationhubs.NotificationHub;
 
-public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule implements ActivityEventListener, LifecycleEventListener {
+public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule {
 
-    private NotificationListener notificationListener;
+    private final NotificationListener notificationListener;
 
     public ReactNativeNotificationHubModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        reactContext.addLifecycleEventListener(this);
-        reactContext.addActivityEventListener(this);
         notificationListener = new CustomListener();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    }
-
-    @Override
-    public void onHostResume() {
-
-    }
-
-    @Override
-    public void onHostPause() {
-
-    }
-
-    @Override
-    public void onHostDestroy() {
-
-    }
 
     @Override
     public String getName() {
@@ -109,6 +90,7 @@ public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule
             NotificationHub.setEnabled(true);
             NotificationHub.start(application, hubName, connectionString);
         }
+
         WritableMap res = Arguments.createMap();
         res.putString(KEY_PROMISE_RESOLVE_UUID, NotificationHub.getPushChannel());
         promise.resolve(res);
@@ -120,7 +102,7 @@ public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule
     }
 
     @ReactMethod
-    public void getUUID(Boolean autoGen, Promise promise) {
+    public void getUUID(Promise promise) {
         String uuid = NotificationHub.getPushChannel();
         if (uuid != null) {
             promise.resolve(uuid);
