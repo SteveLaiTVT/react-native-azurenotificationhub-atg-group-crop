@@ -24,9 +24,11 @@ import com.microsoft.windowsazure.messaging.notificationhubs.NotificationHub;
 public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule {
 
     private final NotificationListener notificationListener;
+    private final Application application;
 
     public ReactNativeNotificationHubModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        application = (Application)reactContext.getApplication();
         notificationListener = new CustomListener();
     }
 
@@ -78,16 +80,9 @@ public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule
             promise.reject(ERROR_INVALID_ARGUMENTS, ERROR_INVALID_SENDER_ID);
             return;
         }
-        ReactContext reactContext = getReactApplicationContext();
-        notificationHubUtil.setConnectionString(reactContext, connectionString);
-        notificationHubUtil.setHubName(reactContext, hubName);
-        notificationHubUtil.setSenderID(reactContext, senderID);
-        notificationHubUtil.setTemplated(reactContext, false);
 
-        NotificationHub.setListener(notificationListener);
-        Application application = getCurrentActivity().getApplication();
         if (application != null) {
-            NotificationHub.setEnabled(true);
+            NotificationHub.setListener(notificationListener);
             NotificationHub.start(application, hubName, connectionString);
         }
 
@@ -97,7 +92,6 @@ public class ReactNativeNotificationHubModule extends ReactContextBaseJavaModule
     }
 
     public void unregister(Promise promise) {
-        NotificationHub.setEnabled(false);
         promise.resolve(null);
     }
 
